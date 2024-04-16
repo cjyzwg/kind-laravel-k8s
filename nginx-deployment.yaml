@@ -1,0 +1,20 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx
+spec:
+  tls:                                          # 以下 4 行是为了支持 TLS
+  - hosts:                                      #
+    - nginx.auth-app-cluster-control-plane.orb.local      #
+    secretName: tls-secret                      #
+  rules:
+  - host: nginx.auth-app-cluster-control-plane.orb.local
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: nginx-deployment
+            port:
+              number: 80
